@@ -35,7 +35,7 @@ jobs:
           fi
 
       - run: |
-          sed -i '5i\ "homepage": "/pages-demo-react", ' ./package.json
+          sed -i '5i\ "homepage": "/react-app-pages", ' ./package.json
       - run: npm ci
       - run: npm run build
       - run: cp build/index.html build/404.html
