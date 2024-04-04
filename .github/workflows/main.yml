@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: '14'
 
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -26,6 +26,13 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - name: Check if package.json exists
+        run: |
+          if [ ! -f package.json ]; then
+            echo "package.json not found"
+            exit 1
+          fi
 
       - run: |
           sed -i '5i\ "homepage": "/pages-demo-react", ' ./package.json
