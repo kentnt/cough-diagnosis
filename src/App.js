@@ -3,10 +3,10 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import feuBackground from './feu.png'; // Import the background image
+import logo from './logo.png'; // Import the logo image
 
 export default function DenseAppBar() {
   const [pageState, setPageState] = React.useState('start');
@@ -23,14 +23,17 @@ export default function DenseAppBar() {
     setShowAlcoholQuestion(event.target.value === 'yes');
     setDrugs(''); // Reset drugs answer when age changes
     setAlcohol(''); // Reset alcohol answer when age changes
+    setResult(''); // Reset result text when answer changes
   };
 
   const handleChangeDrugs = (event) => {
     setDrugs(event.target.value);
+    setResult(''); // Reset result text when answer changes
   };
 
   const handleChangeAlcohol = (event) => {
     setAlcohol(event.target.value);
+    setResult(''); // Reset result text when answer changes
   };
 
   const handleSubmit = () => {
@@ -41,9 +44,9 @@ export default function DenseAppBar() {
         setResult("Good");
       }
     } else if (age === 'yes' && alcohol === 'yes') {
-      setResult("Sinner");
+      setResult("Bad");
     } else if (age === 'yes' && alcohol === 'no') {
-      setResult("Angel");
+      setResult("Good");
     }
   };
 
@@ -57,89 +60,103 @@ export default function DenseAppBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundImage: `url(${feuBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', // Opacity set to 50%
+      }}
+    >
       <AppBar position="static" sx={{ backgroundColor: '#013220', width: '100%' }}>
         <Toolbar variant="dense">
-          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
+          <img src={logo} alt="Logo" style={{ marginRight: '16px', height: '40px' }} />
           <Typography variant="h6" color="inherit" component="div">
             Far Eastern University
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box sx={{ p: 2, width: '100%', maxWidth: '400px' }}>
-        {pageState === 'start' && (
-          <Box>
-            <Typography variant="body1" color="inherit" component="div" sx={{ textAlign: 'center' }}>
+      <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+        <Box sx={{ p: 2, width: '100%', maxWidth: '400px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
+          {pageState === 'start' && (
+            <Typography variant="body1" color="inherit" component="div">
               This test checks the cause of your coughs
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleStartTest} sx={{ mt: 2, display: 'block', margin: 'auto' }}>
+          )}
+          {pageState === 'questions' && (
+            <FormControl component="fieldset">
+              <Typography variant="body1" color="inherit" component="div">
+                Are you below 18 years old?
+              </Typography>
+              <RadioGroup
+                row
+                aria-label="age"
+                name="age"
+                value={age}
+                onChange={handleChangeAge}
+              >
+                <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                <FormControlLabel value="no" control={<Radio />} label="No" />
+              </RadioGroup>
+              {showDrugsQuestion && (
+                <FormControl component="fieldset" sx={{ mt: 2 }}>
+                  <Typography variant="body1" color="inherit" component="div">
+                    Do you do drugs?
+                  </Typography>
+                  <RadioGroup
+                    row
+                    aria-label="drugs"
+                    name="drugs"
+                    value={drugs}
+                    onChange={handleChangeDrugs}
+                  >
+                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                  </RadioGroup>
+                </FormControl>
+              )}
+              {showAlcoholQuestion && (
+                <FormControl component="fieldset" sx={{ mt: 2 }}>
+                  <Typography variant="body1" color="inherit" component="div">
+                    Have you drank any alcohol?
+                  </Typography>
+                  <RadioGroup
+                    row
+                    aria-label="alcohol"
+                    name="alcohol"
+                    value={alcohol}
+                    onChange={handleChangeAlcohol}
+                  >
+                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                  </RadioGroup>
+                </FormControl>
+              )}
+              {allQuestionsAnswered && (
+                <Button
+                  variant="contained"
+                  onClick={handleSubmit}
+                  sx={{ mt: 2, backgroundColor: '#013220', color: '#fff' }}
+                >
+                  Submit
+                </Button>
+              )}
+              {result && (
+                <Typography variant="body1" color="inherit" component="div" sx={{ mt: 2 }}>
+                  <strong>Result:</strong> <br /> {result}
+                </Typography>
+              )}
+            </FormControl>
+          )}
+          {pageState === 'start' && (
+            <Button variant="contained" color="primary" onClick={handleStartTest} sx={{ mt: 2, backgroundColor: '#013220', color: '#fff' }}>
               Start Test
             </Button>
-          </Box>
-        )}
-        {pageState === 'questions' && (
-          <FormControl component="fieldset">
-            <Typography variant="body1" color="inherit" component="div">
-              Are you below 18 years old?
-            </Typography>
-            <RadioGroup
-              row
-              aria-label="age"
-              name="age"
-              value={age}
-              onChange={handleChangeAge}
-            >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
-            </RadioGroup>
-            {showDrugsQuestion && (
-              <FormControl component="fieldset" sx={{ mt: 2, display: 'block' }}>
-                <Typography variant="body1" color="inherit" component="div">
-                  Do you do drugs?
-                </Typography>
-                <RadioGroup
-                  row
-                  aria-label="drugs"
-                  name="drugs"
-                  value={drugs}
-                  onChange={handleChangeDrugs}
-                >
-                  <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                  <FormControlLabel value="no" control={<Radio />} label="No" />
-                </RadioGroup>
-              </FormControl>
-            )}
-            {showAlcoholQuestion && (
-              <FormControl component="fieldset" sx={{ mt: 2, display: 'block' }}>
-                <Typography variant="body1" color="inherit" component="div">
-                  Have you drank any alcohol?
-                </Typography>
-                <RadioGroup
-                  row
-                  aria-label="alcohol"
-                  name="alcohol"
-                  value={alcohol}
-                  onChange={handleChangeAlcohol}
-                >
-                  <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                  <FormControlLabel value="no" control={<Radio />} label="No" />
-                </RadioGroup>
-              </FormControl>
-            )}
-            {allQuestionsAnswered && (
-              <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ mt: 2 }}>
-                Submit
-              </Button>
-            )}
-            {result && (
-              <Typography variant="body1" color="inherit" component="div" sx={{ mt: 2 }}>
-                {result}
-              </Typography>
-            )}
-          </FormControl>
-        )}
+          )}
+        </Box>
       </Box>
     </Box>
   );
