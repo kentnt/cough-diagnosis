@@ -5,9 +5,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid'; // Import Grid component
-import feuBackground from './feu.png'; // Import the background image
-import logo from './logo.png'; // Import the logo image
+import Grid from '@mui/material/Grid';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import feuBackground from './feu.png';
+import logo from './logo.png';
 
 export default function DenseAppBar() {
   const [systolic, setSystolic] = React.useState('');
@@ -25,11 +29,12 @@ export default function DenseAppBar() {
   });
   const [showLegend, setShowLegend] = React.useState(false);
   const [showRelatedCauses, setShowRelatedCauses] = React.useState(false);
+  const [showStartupPage, setShowStartupPage] = React.useState(true);
+  const [showNursingDiagnosis, setShowNursingDiagnosis] = React.useState(false);
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
 
-    // Determine blood pressure status only if both systolic and diastolic values are not empty
     let bloodPressureStatus = null;
     if (systolic !== '' && diastolic !== '') {
       if (systolic >= 120 && systolic <= 129 && diastolic >= 80 && diastolic <= 84) {
@@ -39,7 +44,6 @@ export default function DenseAppBar() {
       }
     }
 
-    // Determine temperature status
     let temperatureStatus = null;
     if (temperature !== '') {
       if (temperature >= 36.1 && temperature <= 37.2) {
@@ -49,7 +53,6 @@ export default function DenseAppBar() {
       }
     }
 
-    // Determine respiratory rate status
     let respiratoryRateStatus = null;
     if (respiratoryRate !== '') {
       if (respiratoryRate >= 12 && respiratoryRate <= 16) {
@@ -59,7 +62,6 @@ export default function DenseAppBar() {
       }
     }
 
-    // Determine pulse rate status
     let pulseRateStatus = null;
     if (pulseRate !== '') {
       if (pulseRate >= 60 && pulseRate <= 100) {
@@ -69,7 +71,6 @@ export default function DenseAppBar() {
       }
     }
 
-    // Determine oxygen saturation status
     let oxygenSaturationStatus = null;
     if (oxygenSaturation !== '') {
       if (oxygenSaturation >= 95 && oxygenSaturation <= 100) {
@@ -87,8 +88,18 @@ export default function DenseAppBar() {
       oxygenSaturation: oxygenSaturationStatus
     });
 
-    setShowLegend(true); // Show the legend after form submission
-    setShowRelatedCauses(true); // Show related causes after form submission
+    setShowLegend(true);
+    setShowRelatedCauses(true);
+    setShowNursingDiagnosis(false);
+    setShowStartupPage(false);
+  };
+
+  const handleStart = () => {
+    setShowStartupPage(false);
+  };
+
+  const handleProceed = () => {
+    setShowNursingDiagnosis(true);
   };
 
   return (
@@ -100,10 +111,10 @@ export default function DenseAppBar() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: '100vh',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)', // Opacity set to 50%
+        backgroundColor: 'rgba(255, 255, 255, 0.5)'
       }}
     >
-      <AppBar position="static" sx={{ backgroundColor: '#013220', width: '100%' }}>
+      <AppBar position="static" sx={{ backgroundColor: '#013220', width: '100%', zIndex: '999' }}>
         <Toolbar variant="dense">
           <img src={logo} alt="Logo" style={{ marginRight: '16px', height: '40px' }} />
           <Typography variant="h6" color="inherit" component="div">
@@ -111,175 +122,253 @@ export default function DenseAppBar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
-        <Box sx={{ p: 2, width: '100%', maxWidth: '600px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
-          <Typography variant="body1" color="inherit" component="div">
-            Please enter the following medical information:
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Systolic Blood Pressure"
-                  value={systolic}
-                  onChange={(e) => setSystolic(e.target.value)}
-                  variant="outlined"
-                  margin="normal"
-                  inputProps={{
-                    style: {
-                      backgroundColor: status.bloodPressure === 'Normal' ? '#ccffcc' : status.bloodPressure === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
-                      color: status.bloodPressure === 'Normal' ? 'green' : status.bloodPressure === 'Deviation from Normal' ? 'red' : 'initial'
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Diastolic Blood Pressure"
-                  value={diastolic}
-                  onChange={(e) => setDiastolic(e.target.value)}
-                  variant="outlined"
-                  margin="normal"
-                  inputProps={{
-                    style: {
-                      backgroundColor: status.bloodPressure === 'Normal' ? '#ccffcc' : status.bloodPressure === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
-                      color: status.bloodPressure === 'Normal' ? 'green' : status.bloodPressure === 'Deviation from Normal' ? 'red' : 'initial'
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Temperature"
-                  value={temperature}
-                  onChange={(e) => setTemperature(e.target.value)}
-                  variant="outlined"
-                  margin="normal"
-                  inputProps={{
-                    style: {
-                      backgroundColor: status.temperature === 'Normal' ? '#ccffcc' : status.temperature === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
-                      color: status.temperature === 'Normal' ? 'green' : status.temperature === 'Deviation from Normal' ? 'red' : 'initial'
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Respiratory Rate"
-                  value={respiratoryRate}
-                  onChange={(e) => setRespiratoryRate(e.target.value)}
-                  variant="outlined"
-                  margin="normal"
-                  inputProps={{
-                    style: {
-                      backgroundColor: status.respiratoryRate === 'Normal' ? '#ccffcc' : status.respiratoryRate === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
-                      color: status.respiratoryRate === 'Normal' ? 'green' : status.respiratoryRate === 'Deviation from Normal' ? 'red' : 'initial'
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Pulse Rate"
-                  value={pulseRate}
-                  onChange={(e) => setPulseRate(e.target.value)}
-                  variant="outlined"
-                  margin="normal"
-                  inputProps={{
-                    style: {
-                      backgroundColor: status.pulseRate === 'Normal' ? '#ccffcc' : status.pulseRate === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
-                      color: status.pulseRate === 'Normal' ? 'green' : status.pulseRate === 'Deviation from Normal' ? 'red' : 'initial'
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Oxygen Saturation"
-                  value={oxygenSaturation}
-                  onChange={(e) => setOxygenSaturation(e.target.value)}
-                  variant="outlined"
-                  margin="normal"
-                  inputProps={{
-                    style: {
-                      backgroundColor: status.oxygenSaturation === 'Normal' ? '#ccffcc' : status.oxygenSaturation === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
-                      color: status.oxygenSaturation === 'Normal' ? 'green' : status.oxygenSaturation === 'Deviation from Normal' ? 'red' : 'initial'
-                    }
-                  }}
-                />
-              </Grid>
-            </Grid>
+      {showStartupPage && (
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+          <Box sx={{ p: 2, width: '100%', maxWidth: '600px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
+            <Typography variant="h4" color="inherit" component="div" sx={{ marginBottom: '20px' }}>
+              Coughing Test
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '20px' }}>
+              Welcome to the coughing test. This test will help determine potential health issues based on your medical information.
+            </Typography>
             <Button
-              type="submit"
               variant="contained"
-              sx={{ mt: 2, backgroundColor: '#013220', color: '#fff' }}
+              onClick={handleStart}
+              sx={{ backgroundColor: '#013220', color: '#fff' }}
             >
-              Submit
+              Start Test
             </Button>
-          </form>
+          </Box>
         </Box>
-        {showLegend && (
+      )}
+      {!showStartupPage && (
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+          <Box sx={{ p: 2, width: '100%', maxWidth: '600px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
+            <Typography variant="body1" color="inherit" component="div">
+              Please enter the following medical information:
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    label="Systolic Blood Pressure"
+                    value={systolic}
+                    onChange={(e) => setSystolic(e.target.value)}
+                    variant="outlined"
+                    margin="normal"
+                    inputProps={{
+                      style: {
+                        backgroundColor: status.bloodPressure === 'Normal' ? '#ccffcc' : status.bloodPressure === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
+                        color: status.bloodPressure === 'Normal' ? 'green' : status.bloodPressure === 'Deviation from Normal' ? 'red' : 'initial'
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    label="Diastolic Blood Pressure"
+                    value={diastolic}
+                    onChange={(e) => setDiastolic(e.target.value)}
+                    variant="outlined"
+                    margin="normal"
+                    inputProps={{
+                      style: {
+                        backgroundColor: status.bloodPressure === 'Normal' ? '#ccffcc' : status.bloodPressure === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
+                        color: status.bloodPressure === 'Normal' ? 'green' : status.bloodPressure === 'Deviation from Normal' ? 'red' : 'initial'
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Temperature"
+                    value={temperature}
+                    onChange={(e) => setTemperature(e.target.value)}
+                    variant="outlined"
+                    margin="normal"
+                    inputProps={{
+                      style: {
+                        backgroundColor: status.temperature === 'Normal' ? '#ccffcc' : status.temperature === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
+                        color: status.temperature === 'Normal' ? 'green' : status.temperature === 'Deviation from Normal' ? 'red' : 'initial'
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Respiratory Rate"
+                    value={respiratoryRate}
+                    onChange={(e) => setRespiratoryRate(e.target.value)}
+                    variant="outlined"
+                    margin="normal"
+                    inputProps={{
+                      style: {
+                        backgroundColor: status.respiratoryRate === 'Normal' ? '#ccffcc' : status.respiratoryRate === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
+                        color: status.respiratoryRate === 'Normal' ? 'green' : status.respiratoryRate === 'Deviation from Normal' ? 'red' : 'initial'
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Pulse Rate"
+                    value={pulseRate}
+                    onChange={(e) => setPulseRate(e.target.value)}
+                    variant="outlined"
+                    margin="normal"
+                    inputProps={{
+                      style: {
+                        backgroundColor: status.pulseRate === 'Normal' ? '#ccffcc' : status.pulseRate === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
+                        color: status.pulseRate === 'Normal' ? 'green' : status.pulseRate === 'Deviation from Normal' ? 'red' : 'initial'
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Oxygen Saturation"
+                    value={oxygenSaturation}
+                    onChange={(e) => setOxygenSaturation(e.target.value)}
+                    variant="outlined"
+                    margin="normal"
+                    inputProps={{
+                      style: {
+                        backgroundColor: status.oxygenSaturation === 'Normal' ? '#ccffcc' : status.oxygenSaturation === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
+                        color: status.oxygenSaturation === 'Normal' ? 'green' : status.oxygenSaturation === 'Deviation from Normal' ? 'red' : 'initial'
+                      }
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 2, backgroundColor: '#013220', color: '#fff' }}
+              >
+                Submit
+              </Button>
+            </form>
+          </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '20px' }}>
-          {showLegend && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundPosition: 'center',
-                minHeight: '10vh',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '8px',
-                padding: '8px',
-                marginTop: '20px'
-              }}
-            >
-              <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                Legend:
-              </Typography>
-              <Typography variant="body1" color="inherit" component="div" sx={{ color: 'green' }}>
-                Normal
-              </Typography>
-              <Typography variant="body1" color="inherit" component="div" sx={{ color: 'red' }}>
-                Deviation from Normal
-              </Typography>
-            </Box>
-          )}
-          {showRelatedCauses && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundPosition: 'center',
-                minHeight: '10vh',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '8px',
-                padding: '8px',
-                marginTop: '20px'
-              }}
-            >
-              <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                Related Causes:
-              </Typography>
-              <Typography variant="body1" color="inherit" component="div">
-                Excessive Secretions
-              </Typography>
-              <Typography variant="body1" color="inherit" component="div">
-                Ineffective Cough
-              </Typography>
-              <Typography variant="body1" color="inherit" component="div">
-                Inconsistent Breathing Sounds
-              </Typography>
-            </Box>
-          )}
+            {showLegend && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundPosition: 'center',
+                  minHeight: '12vh', /* Adjusted minHeight */
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  marginTop: '20px',
+                }}
+              >
+                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                  <strong>Legend:</strong>
+                </Typography>
+                <Typography variant="body1" color="inherit" component="div" sx={{ color: 'green' }}>
+                  Normal
+                </Typography>
+                <Typography variant="body1" color="inherit" component="div" sx={{ color: 'red' }}>
+                  Deviation from Normal
+                </Typography>
+              </Box>
+            )}
+            {showRelatedCauses && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundPosition: 'center',
+                  minHeight: '15vh', /* Adjusted minHeight */
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  marginTop: '20px',
+                }}
+              >
+                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                  <strong>Related Causes:</strong>
+                </Typography>
+                <Typography variant="body1" color="inherit" component="div">
+                  Excessive Secretions
+                </Typography>
+                <Typography variant="body1" color="inherit" component="div">
+                  Ineffective Cough
+                </Typography>
+                <Typography variant="body1" color="inherit" component="div">
+                  Inconsistent Breathing Sounds
+                </Typography>
+              </Box>
+            )}
+            {showRelatedCauses && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundPosition: 'center',
+                  minHeight: '8vh',
+                  minWidth: '30vh',
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  marginTop: '20px',
+                }}
+              >
+                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                  <strong>Proceed to the next test</strong>
+                </Typography>
+                <Button
+                  variant="contained"
+                  onClick={handleProceed}
+                  sx={{ backgroundColor: '#013220', color: '#fff' }}
+                >
+                  Proceed
+                </Button>
+              </Box>
+            )}
+            {showNursingDiagnosis && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundPosition: 'center',
+                  minHeight: '12vh', /* Adjusted minHeight */
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  marginTop: '20px',
+                }}
+              >
+                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                  <strong>Nursing Diagnosis</strong>
+                </Typography>
+                <Box>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Combo Box</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={''}
+                      onChange={() => {}}
+                    >
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
+            )}
+          </Box>
         </Box>
-        )}
-      </Box>
+      )}
     </Box>
   );
 }
