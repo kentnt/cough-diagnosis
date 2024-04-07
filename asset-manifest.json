@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/newfolder/static/css/main.e6c13ad2.css",
-    "main.js": "/newfolder/static/js/main.8e730e37.js",
-    "static/js/453.9e3ce891.chunk.js": "/newfolder/static/js/453.9e3ce891.chunk.js",
-    "static/media/feu.png": "/newfolder/static/media/feu.b6a1a195d1c9c91ad3f5.png",
-    "static/media/logo.png": "/newfolder/static/media/logo.cd99727c1b09c8b2992e.png",
-    "index.html": "/newfolder/index.html",
-    "main.e6c13ad2.css.map": "/newfolder/static/css/main.e6c13ad2.css.map",
-    "main.8e730e37.js.map": "/newfolder/static/js/main.8e730e37.js.map",
-    "453.9e3ce891.chunk.js.map": "/newfolder/static/js/453.9e3ce891.chunk.js.map"
+    "main.css": "/cough-diagnosis/static/css/main.e6c13ad2.css",
+    "main.js": "/cough-diagnosis/static/js/main.f2de7fd7.js",
+    "static/js/453.9e3ce891.chunk.js": "/cough-diagnosis/static/js/453.9e3ce891.chunk.js",
+    "static/media/feu.png": "/cough-diagnosis/static/media/feu.b6a1a195d1c9c91ad3f5.png",
+    "static/media/logo.png": "/cough-diagnosis/static/media/logo.cd99727c1b09c8b2992e.png",
+    "index.html": "/cough-diagnosis/index.html",
+    "main.e6c13ad2.css.map": "/cough-diagnosis/static/css/main.e6c13ad2.css.map",
+    "main.f2de7fd7.js.map": "/cough-diagnosis/static/js/main.f2de7fd7.js.map",
+    "453.9e3ce891.chunk.js.map": "/cough-diagnosis/static/js/453.9e3ce891.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.8e730e37.js"
+    "static/js/main.f2de7fd7.js"
   ]
 }
