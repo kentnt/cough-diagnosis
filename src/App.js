@@ -102,6 +102,15 @@ export default function DenseAppBar() {
     setShowNursingDiagnosis(true);
   };
 
+  // Function to handle input change for integer fields
+  const handleIntegerChange = (setStateFunc) => (event) => {
+    const inputValue = event.target.value;
+    // Validate if the input is an integer
+    if (inputValue === '' || /^\d+$/.test(inputValue)) {
+      setStateFunc(inputValue);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -154,7 +163,7 @@ export default function DenseAppBar() {
                     fullWidth
                     label="Systolic Blood Pressure"
                     value={systolic}
-                    onChange={(e) => setSystolic(e.target.value)}
+                    onChange={handleIntegerChange(setSystolic)}
                     variant="outlined"
                     margin="normal"
                     inputProps={{
@@ -170,7 +179,7 @@ export default function DenseAppBar() {
                     fullWidth
                     label="Diastolic Blood Pressure"
                     value={diastolic}
-                    onChange={(e) => setDiastolic(e.target.value)}
+                    onChange={handleIntegerChange(setDiastolic)}
                     variant="outlined"
                     margin="normal"
                     inputProps={{
@@ -186,7 +195,7 @@ export default function DenseAppBar() {
                     fullWidth
                     label="Temperature"
                     value={temperature}
-                    onChange={(e) => setTemperature(e.target.value)}
+                    onChange={handleIntegerChange(setTemperature)}
                     variant="outlined"
                     margin="normal"
                     inputProps={{
@@ -202,7 +211,7 @@ export default function DenseAppBar() {
                     fullWidth
                     label="Respiratory Rate"
                     value={respiratoryRate}
-                    onChange={(e) => setRespiratoryRate(e.target.value)}
+                    onChange={handleIntegerChange(setRespiratoryRate)}
                     variant="outlined"
                     margin="normal"
                     inputProps={{
@@ -218,7 +227,7 @@ export default function DenseAppBar() {
                     fullWidth
                     label="Pulse Rate"
                     value={pulseRate}
-                    onChange={(e) => setPulseRate(e.target.value)}
+                    onChange={handleIntegerChange(setPulseRate)}
                     variant="outlined"
                     margin="normal"
                     inputProps={{
@@ -234,7 +243,7 @@ export default function DenseAppBar() {
                     fullWidth
                     label="Oxygen Saturation"
                     value={oxygenSaturation}
-                    onChange={(e) => setOxygenSaturation(e.target.value)}
+                    onChange={handleIntegerChange(setOxygenSaturation)}
                     variant="outlined"
                     margin="normal"
                     inputProps={{
@@ -270,7 +279,7 @@ export default function DenseAppBar() {
                 }}
               >
                 <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                  <strong>Legend:</strong>
+                  <strong>Legend</strong>
                 </Typography>
                 <Typography variant="body1" color="inherit" component="div" sx={{ color: 'green' }}>
                   Normal
@@ -294,7 +303,7 @@ export default function DenseAppBar() {
                 }}
               >
                 <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                  <strong>Related Causes:</strong>
+                  <strong>Related Causes</strong>
                 </Typography>
                 <Typography variant="body1" color="inherit" component="div">
                   Excessive Secretions
