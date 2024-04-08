@@ -1,36 +1,41 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import CustomAppBar from './CustomAppBar'; // Import the CustomAppBar component
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import Radio from '@mui/material/Radio';
 import feuBackground from './feu.png';
-import logo from './logo.png';
 
-export default function DenseAppBar() {
-  const [systolic, setSystolic] = React.useState('');
-  const [diastolic, setDiastolic] = React.useState('');
-  const [temperature, setTemperature] = React.useState('');
-  const [respiratoryRate, setRespiratoryRate] = React.useState('');
-  const [pulseRate, setPulseRate] = React.useState('');
-  const [oxygenSaturation, setOxygenSaturation] = React.useState('');
-  const [status, setStatus] = React.useState({
+export default function App() {
+  const [systolic, setSystolic] = useState('');
+  const [diastolic, setDiastolic] = useState('');
+  const [temperature, setTemperature] = useState('');
+  const [respiratoryRate, setRespiratoryRate] = useState('');
+  const [pulseRate, setPulseRate] = useState('');
+  const [oxygenSaturation, setOxygenSaturation] = useState('');
+  const [objectiveSubjectiveData, setObjectiveSubjectiveData] = useState('');
+  const [status, setStatus] = useState({
     bloodPressure: null,
     temperature: null,
     respiratoryRate: null,
     pulseRate: null,
-    oxygenSaturation: null
+    oxygenSaturation: null,
+    objectiveSubjectiveData: null
   });
-  const [showLegend, setShowLegend] = React.useState(false);
-  const [showRelatedCauses, setShowRelatedCauses] = React.useState(false);
-  const [showStartupPage, setShowStartupPage] = React.useState(true);
-  const [showNursingDiagnosis, setShowNursingDiagnosis] = React.useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [showLegend, setShowLegend] = useState(false);
+  const [showRelatedCauses, setShowRelatedCauses] = useState(false);
+  const [showStartupPage, setShowStartupPage] = useState(true);
+  const [showNursingDiagnosis, setShowNursingDiagnosis] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -80,12 +85,21 @@ export default function DenseAppBar() {
       }
     }
 
+    let objectiveSubjectiveDataStatus = null;
+    if (objectiveSubjectiveData.includes('crackles') || objectiveSubjectiveData.includes('crackle') || objectiveSubjectiveData.includes('cough')) {
+      objectiveSubjectiveDataStatus = 'Deviation from Normal';
+    } else {
+      objectiveSubjectiveDataStatus = 'Normal';
+    }
+    
+
     setStatus({
       bloodPressure: bloodPressureStatus,
       temperature: temperatureStatus,
       respiratoryRate: respiratoryRateStatus,
       pulseRate: pulseRateStatus,
-      oxygenSaturation: oxygenSaturationStatus
+      oxygenSaturation: oxygenSaturationStatus,
+      objectiveSubjectiveData: objectiveSubjectiveDataStatus
     });
 
     setShowLegend(true);
@@ -111,6 +125,10 @@ export default function DenseAppBar() {
     }
   };
 
+  const handleObjectiveSubjectiveChange = (event) => {
+    setObjectiveSubjectiveData(event.target.value);
+  };
+
   return (
     <Box
       sx={{
@@ -123,14 +141,7 @@ export default function DenseAppBar() {
         backgroundColor: 'rgba(255, 255, 255, 0.5)'
       }}
     >
-      <AppBar position="static" sx={{ backgroundColor: '#013220', width: '100%', zIndex: '999' }}>
-        <Toolbar variant="dense">
-          <img src={logo} alt="Logo" style={{ marginRight: '16px', height: '40px' }} />
-          <Typography variant="h6" color="inherit" component="div">
-            Far Eastern University
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <CustomAppBar />
       {showStartupPage && (
         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
           <Box sx={{ p: 2, width: '100%', maxWidth: '600px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
@@ -254,6 +265,22 @@ export default function DenseAppBar() {
                     }}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Objective/Subjective Data"
+                    value={objectiveSubjectiveData}
+                    onChange={handleObjectiveSubjectiveChange}
+                    variant="outlined"
+                    margin="normal"
+                    inputProps={{
+                      style: {
+                        backgroundColor: status.objectiveSubjectiveData === 'Normal' ? '#ccffcc' : status.objectiveSubjectiveData === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
+                        color: status.objectiveSubjectiveData === 'Normal' ? 'green' : status.objectiveSubjectiveData === 'Deviation from Normal' ? 'red' : 'initial'
+                      }
+                    }}
+                  />
+                </Grid>
               </Grid>
               <Button
                 type="submit"
@@ -271,7 +298,7 @@ export default function DenseAppBar() {
                   display: 'flex',
                   flexDirection: 'column',
                   backgroundPosition: 'center',
-                  minHeight: '12vh', /* Adjusted minHeight */
+                  minHeight: '5vh', /* Adjusted minHeight */
                   backgroundColor: 'rgba(255, 255, 255, 0.8)',
                   borderRadius: '8px',
                   padding: '8px',
@@ -295,7 +322,7 @@ export default function DenseAppBar() {
                   display: 'flex',
                   flexDirection: 'column',
                   backgroundPosition: 'center',
-                  minHeight: '15vh', /* Adjusted minHeight */
+                  minHeight: '6vh', /* Adjusted minHeight */
                   backgroundColor: 'rgba(255, 255, 255, 0.8)',
                   borderRadius: '8px',
                   padding: '8px',
@@ -303,7 +330,7 @@ export default function DenseAppBar() {
                 }}
               >
                 <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                  <strong>Related Causes</strong>
+                  <strong>Possible Related Factors</strong>
                 </Typography>
                 <Typography variant="body1" color="inherit" component="div">
                   Excessive Secretions
@@ -348,7 +375,7 @@ export default function DenseAppBar() {
                   display: 'flex',
                   flexDirection: 'column',
                   backgroundPosition: 'center',
-                  minHeight: '12vh', /* Adjusted minHeight */
+                  minHeight: '6vh', /* Adjusted minHeight */
                   backgroundColor: 'rgba(255, 255, 255, 0.8)',
                   borderRadius: '8px',
                   padding: '8px',
@@ -358,14 +385,14 @@ export default function DenseAppBar() {
                 <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
                   <strong>Nursing Diagnosis</strong>
                 </Typography>
-                <Box>
+                <Box sx={{ marginBottom: '10px' }}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Combo Box</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={''}
-                      onChange={() => {}}
+                      value={selectedValue}
+                      onChange={(event) => setSelectedValue(event.target.value)}
                     >
                       <MenuItem value={10}>Ten</MenuItem>
                       <MenuItem value={20}>Twenty</MenuItem>
@@ -373,6 +400,36 @@ export default function DenseAppBar() {
                     </Select>
                   </FormControl>
                 </Box>
+              </Box>
+            )}
+            {showNursingDiagnosis && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundPosition: 'center',
+                  minHeight: '8vh', /* Adjusted minHeight */
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  marginTop: '20px',
+                }}
+              >
+                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                  <strong>Related Factors</strong>
+                </Typography>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    aria-label="options"
+                    name="options"
+                    value={selectedOption}
+                    onChange={(event) => setSelectedOption(event.target.value)}
+                  >
+                    <FormControlLabel value="option1" control={<Radio />} label="Option 1" />
+                    <FormControlLabel value="option2" control={<Radio />} label="Option 2" />
+                    <FormControlLabel value="option3" control={<Radio />} label="Option 3" />
+                  </RadioGroup>
+                </FormControl>
               </Box>
             )}
           </Box>
