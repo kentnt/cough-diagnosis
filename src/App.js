@@ -13,15 +13,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import feuBackground from './feu.png';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
 
 export default function App() {
   const [systolic, setSystolic] = useState('');
   const [diastolic, setDiastolic] = useState('');
-  const [temperature, setTemperature] = useState('');
   const [respiratoryRate, setRespiratoryRate] = useState('');
   const [pulseRate, setPulseRate] = useState('');
   const [oxygenSaturation, setOxygenSaturation] = useState('');
   const [objectiveSubjectiveData, setObjectiveSubjectiveData] = useState('');
+  const [temperature, setTemperature] = useState('');
   const [status, setStatus] = useState({
     bloodPressure: null,
     temperature: null,
@@ -31,42 +33,102 @@ export default function App() {
     objectiveSubjectiveData: null
   });
   const [selectedValue, setSelectedValue] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
   const [showLegend, setShowLegend] = useState(false);
   const [showRelatedCauses, setShowRelatedCauses] = useState(false);
   const [showStartupPage, setShowStartupPage] = useState(true);
-  const [showNursingDiagnosis, setShowNursingDiagnosis] = useState(false);
   const [selectedDiagnosis, setSelectedDiagnosis] = useState('');
   const [selectedFactor, setSelectedFactor] = useState('');
-  
+  const [showRadioGroups, setShowRadioGroups] = useState(false);
+  const [checkbox1Checked, setCheckbox1Checked] = useState(false);
+  const [checkbox2Checked, setCheckbox2Checked] = useState(false);
+  const [checkbox3Checked, setCheckbox3Checked] = useState(false);
+  const [checkbox4Checked, setCheckbox4Checked] = useState(false);
+  const [checkbox5Checked, setCheckbox5Checked] = useState(false);
+  const [checkbox6Checked, setCheckbox6Checked] = useState(false);
+  const [showConfirmBox1, setShowConfirmBox1] = useState(false);
+  const [nursingDiagnosis, setShowNursingDiagnosis] = useState(false);
+  const [showActionPlanBox, setShowActionPlanBox] = useState(false);
 
-  const handleComboBoxChange = (event) => {
-    setSelectedValue(event.target.value);
+  const handleDiagnosisChange = (event) => {
+    setSelectedDiagnosis(event.target.value);
+    // Update selectedValue based on the selected nursing diagnosis
+    if (event.target.value === 'Impaired Gas Exchange') {
+      setSelectedValue('Impaired Gas Exchange');
+    } else if (event.target.value === 'Ineffective Airway Clearance') {
+      setSelectedValue('Ineffective Airway Clearance');
+    } else if (event.target.value === 'Acute Pain') {
+      setSelectedValue('Acute Pain');
+    }
   };
-const handleDiagnosisChange = (event) => {
-  setSelectedDiagnosis(event.target.value);
-  // Update selectedValue based on the selected nursing diagnosis
-  if (event.target.value === 10) {
-    setSelectedValue(10);
-  } else if (event.target.value === 20) {
-    setSelectedValue(20);
-  } else if (event.target.value === 30) {
-    setSelectedValue(30);
-  }
-};
 
-// Function to handle radio button value change
-const handleFactorChange = (event) => {
-  setSelectedFactor(event.target.value);
-};
+  // Function to handle radio button value change
+  const handleFactorChange = (event) => {
+    setSelectedFactor(event.target.value);
+  };
 
   const handleConfirm = () => {
-    // You can perform any action you need here, such as submitting the selected diagnosis and factor
-    // For demonstration, let's log the selected diagnosis and factor to console
-    console.log('Selected Diagnosis:', selectedDiagnosis);
-    console.log('Selected Factor:', selectedFactor);
+    // Reset state variables to clear the boxes
+    setSystolic('');
+    setDiastolic('');
+    setTemperature('');
+    setRespiratoryRate('');
+    setPulseRate('');
+    setOxygenSaturation('');
+    setObjectiveSubjectiveData('');
+    setSelectedDiagnosis('');
+    setSelectedFactor('');
+    setShowLegend(false);
+    setShowRelatedCauses(false);
+    setShowNursingDiagnosis(false);
+    setShowRadioGroups(true); // Show the new box with radio groups
+  };
+
+  const handleConfirm2 = () => {
+    // Reset state variables to clear the boxes
+    setSystolic('');
+    setDiastolic('');
+    setTemperature('');
+    setRespiratoryRate('');
+    setPulseRate('');
+    setOxygenSaturation('');
+    setObjectiveSubjectiveData('');
+    setSelectedDiagnosis('');
+    setSelectedFactor('');
+    setShowLegend(false);
+    setShowRelatedCauses(false);
+    setShowNursingDiagnosis(false);
+    setShowRadioGroups(true); // Show the new box with radio groups
+    setShowConfirmBox1(false); // Hide the possible interventions box
+    setShowActionPlanBox(false);
   };
   
+  const handleCheckbox1Change = (event) => {
+    setCheckbox1Checked(event.target.checked);
+  };
+
+  const handleCheckbox2Change = (event) => {
+    setCheckbox2Checked(event.target.checked);
+  };
+
+  const handleCheckbox3Change = (event) => {
+    setCheckbox3Checked(event.target.checked);
+  };
+
+  const handleCheckbox4Change = (event) => {
+    setCheckbox4Checked(event.target.checked);
+  };
+  const handleCheckbox5Change = (event) => {
+    setCheckbox5Checked(event.target.checked);
+  };
+
+  const handleCheckbox6Change = (event) => {
+    setCheckbox6Checked(event.target.checked);
+  };
+
+  const handleConfirm1 = () => {
+    setShowConfirmBox1(true); // Set showConfirmBox to true when Confirm button is clicked
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -90,7 +152,7 @@ const handleFactorChange = (event) => {
 
     let respiratoryRateStatus = null;
     if (respiratoryRate !== '') {
-      if (respiratoryRate >= 12 && respiratoryRate <= 16) {
+      if (respiratoryRate >= 12 && respiratoryRate <= 20) {
         respiratoryRateStatus = 'Normal';
       } else {
         respiratoryRateStatus = 'Deviation from Normal';
@@ -121,7 +183,6 @@ const handleFactorChange = (event) => {
     } else {
       objectiveSubjectiveDataStatus = 'Normal';
     }
-    
 
     setStatus({
       bloodPressure: bloodPressureStatus,
@@ -142,10 +203,6 @@ const handleFactorChange = (event) => {
     setShowStartupPage(false);
   };
 
-  const handleProceed = () => {
-    setShowNursingDiagnosis(true);
-  };
-
   // Function to handle input change for integer fields
   const handleIntegerChange = (setStateFunc) => (event) => {
     const inputValue = event.target.value;
@@ -159,6 +216,10 @@ const handleFactorChange = (event) => {
     setObjectiveSubjectiveData(event.target.value);
   };
 
+  const handleTemperatureChange = (event) => {
+    setTemperature(event.target.value);
+  };
+  
   return (
     <Box
       sx={{
@@ -172,26 +233,29 @@ const handleFactorChange = (event) => {
       }}
     >
       <CustomAppBar />
-      {showStartupPage && (
+      {showStartupPage && !showRadioGroups && (
         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
           <Box sx={{ p: 2, width: '100%', maxWidth: '600px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
-            <Typography variant="h4" color="inherit" component="div" sx={{ marginBottom: '20px' }}>
-              Coughing Test
+            <Typography variant="h4" color="inherit" component="div" sx={{ marginBottom: '5px' }}>
+              Clinical Decision Support System
             </Typography>
             <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '20px' }}>
-              Welcome to the coughing test. This test will help determine potential health issues based on your medical information.
+              Group 2 Section 202
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '20px' }}>
+              A demonstration of clinical decision support system (CDSS) that ensures quality patient care for all 
             </Typography>
             <Button
               variant="contained"
               onClick={handleStart}
-              sx={{ backgroundColor: '#013220', color: '#fff' }}
+              sx={{ backgroundColor: '#013220', color: '#fff', width: '100%' }}
             >
               Start Test
             </Button>
           </Box>
         </Box>
       )}
-      {!showStartupPage && (
+      {!showStartupPage && !showRadioGroups && (
         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
           <Box sx={{ p: 2, width: '100%', maxWidth: '600px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
             <Typography variant="body1" color="inherit" component="div">
@@ -236,14 +300,14 @@ const handleFactorChange = (event) => {
                     fullWidth
                     label="Temperature"
                     value={temperature}
-                    onChange={handleIntegerChange(setTemperature)}
+                    onChange={handleTemperatureChange}
                     variant="outlined"
                     margin="normal"
                     inputProps={{
                       style: {
                         backgroundColor: status.temperature === 'Normal' ? '#ccffcc' : status.temperature === 'Deviation from Normal' ? '#ffb3b3' : '#ffffff',
                         color: status.temperature === 'Normal' ? 'green' : status.temperature === 'Deviation from Normal' ? 'red' : 'initial'
-                      }
+                      },
                     }}
                   />
                 </Grid>
@@ -315,7 +379,7 @@ const handleFactorChange = (event) => {
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ mt: 2, backgroundColor: '#013220', color: '#fff' }}
+                sx={{ mt: 2, backgroundColor: '#013220', color: '#fff', width: '100%' }}
               >
                 Submit
               </Button>
@@ -373,33 +437,7 @@ const handleFactorChange = (event) => {
                 </Typography>
               </Box>
             )}
-            {showRelatedCauses && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  backgroundPosition: 'center',
-                  minHeight: '8vh',
-                  minWidth: '30vh',
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  borderRadius: '8px',
-                  padding: '8px',
-                  marginTop: '20px',
-                }}
-              >
-                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                  <strong>Proceed to the next test</strong>
-                </Typography>
-                <Button
-                  variant="contained"
-                  onClick={handleProceed}
-                  sx={{ backgroundColor: '#013220', color: '#fff' }}
-                >
-                  Proceed
-                </Button>
-              </Box>
-            )}
-            {showNursingDiagnosis && (
+            {showLegend && (
               <Box
                 sx={{
                   display: 'flex',
@@ -424,9 +462,9 @@ const handleFactorChange = (event) => {
                       value={selectedDiagnosis}
                       onChange={handleDiagnosisChange}
                     >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      <MenuItem value={'Impaired Gas Exchange'}>Impaired Gas Exchange</MenuItem>
+                      <MenuItem value={'Ineffective Airway Clearance'}>Ineffective Airway Clearance</MenuItem>
+                      <MenuItem value={'Acute Pain'}>Acute Pain</MenuItem>
                     </Select>
                   </FormControl>
 
@@ -456,57 +494,178 @@ const handleFactorChange = (event) => {
                   value={selectedFactor}
                   onChange={handleFactorChange}
                 >
-                    {selectedValue === 10 && (
+                    {selectedValue === 'Impaired Gas Exchange' && (
                       <>
-                        <FormControlLabel value="option1" control={<Radio />} label="Option 1" />
-                        <FormControlLabel value="option2" control={<Radio />} label="Option 2" />
+                        <FormControlLabel value="Pain" control={<Radio />} label="Pain" />
+                        <FormControlLabel value="Ineffective Airway Clearance" control={<Radio />} label="Ineffective Airway Clearance" />
                       </>
                     )}
-                    {selectedValue === 20 && (
+                    {selectedValue === 'Ineffective Airway Clearance' && (
                       <>
-                        <FormControlLabel value="option3" control={<Radio />} label="Option 3" />
-                        <FormControlLabel value="option4" control={<Radio />} label="Option 4" />
+                        <FormControlLabel value="Dehydration" control={<Radio />} label="Dehydration" />
+                        <FormControlLabel value="Excessive Mucus" control={<Radio />} label="Excessive Mucus" />
+                        <FormControlLabel value="Mucus Plug" control={<Radio />} label="Mucus Plug" />
+                        <FormControlLabel value="Retained Secretions" control={<Radio />} label="Retained Secretions" />
+                        <FormControlLabel value="Exposure to Harmful Substance" control={<Radio />} label="Exposure to Harmful Substance" />
+                        <FormControlLabel value="Smoking" control={<Radio />} label="Smoking" />
+                        <FormControlLabel value="Fear of Pain" control={<Radio />} label="Fear of Pain" />
+                        <FormControlLabel value="Foreign Body in Airway" control={<Radio />} label="Foreign Body in Airway" />
                       </>
                     )}
-                    {selectedValue === 30 && (
+                    {selectedValue === 'Acute Pain' && (
                       <>
-                        <FormControlLabel value="option5" control={<Radio />} label="Option 5" />
-                        <FormControlLabel value="option6" control={<Radio />} label="Option 6" />
+                        <FormControlLabel value="Biological Injury Agent" control={<Radio />} label="Biological Injury Agent" />
+                        <FormControlLabel value="Chemical Injury Agent" control={<Radio />} label="Chemical Injury Agent" />
+                        <FormControlLabel value="Physical Injury Agent" control={<Radio />} label="Physical Injury Agent" />
                       </>
                     )}
                   </RadioGroup>
                 </FormControl>
               </Box>
             )}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundPosition: 'center',
-                minHeight: '10vh', /* Adjusted minHeight */
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '8px',
-                padding: '8px',
-                width: '100%', // Adjusted width to match the medical information box
-                marginTop: '20px',
-              }}
-            >
-                          <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                <strong>Selected Nursing Diagnosis</strong>: {selectedDiagnosis}
-              </Typography>
-              <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
-                <strong>Selected Related Factor</strong>: {selectedFactor}
-              </Typography>
-              <Button
-                variant="contained"
-                onClick={handleConfirm}
-                sx={{ backgroundColor: '#013220', color: '#fff' }}
+            {selectedFactor && ( // Check if a radio button item is selected
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundPosition: 'center',
+                  minHeight: '10vh', /* Adjusted minHeight */
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  width: '95%', // Adjusted width to match the medical information box
+                  marginTop: '20px',
+                }}
               >
-                Confirm
-              </Button>
-            </Box>
+                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                  <strong>Selected Nursing Diagnosis</strong>: {selectedDiagnosis}
+                </Typography>
+                <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                  <strong>Selected Related Factor</strong>: {selectedFactor}
+                </Typography>
+                <Button
+                  variant="contained"
+                  onClick={handleConfirm}
+                  sx={{ backgroundColor: '#013220', color: '#fff' }}
+                >
+                  Confirm
+                </Button>
+              </Box>
+            )}
           </Box>
         </Box>
+      )}
+      {showRadioGroups && (
+    <Box
+      sx={{
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '20px'
+      }}
+    >
+    <Box sx={{ p: 2, width: '100%', maxWidth: '80vh', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
+      <Typography variant="body1" color="inherit" component="div"  sx={{ marginTop: '5px' }}>
+        <strong>Select Action Plan for the patient</strong>
+      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="body1" color="inherit" component="div">
+            <strong>Short-term</strong>
+          </Typography>
+          <FormControl component="fieldset">
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox checked={checkbox1Checked} onChange={handleCheckbox1Change} />}
+                label="Relieve pain"
+                sx={{ textAlign: 'left', marginBottom: 0.2 }}
+              />
+              <FormControlLabel
+                control={<Checkbox checked={checkbox2Checked} onChange={handleCheckbox2Change} />}
+                label="Increase in air exchange"
+                sx={{ textAlign: 'left', marginBottom: 0.2 }}
+              />
+              <FormControlLabel
+                control={<Checkbox checked={checkbox3Checked} onChange={handleCheckbox3Change} />}
+                label="Decrease crackles"
+                sx={{ textAlign: 'left', marginBottom: 0.2  }}
+              />
+              <FormControlLabel
+                control={<Checkbox checked={checkbox4Checked} onChange={handleCheckbox4Change} />}
+                label="Normal range of RR and oxygen Saturation"
+                sx={{ textAlign: 'left', marginBottom: 0.2  }}
+              />
+            </FormGroup>
+          </FormControl>
+        </Box>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="body1" color="inherit" component="div">
+            <strong>Long-term</strong>
+          </Typography>
+          <FormControl component="fieldset">
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox checked={checkbox5Checked} onChange={handleCheckbox5Change} />}
+                label="Give techniques for effective airway patency"
+                sx={{ textAlign: 'left', marginBottom: 0.2  }}
+              />
+              <FormControlLabel
+                control={<Checkbox checked={checkbox6Checked} onChange={handleCheckbox6Change} />}
+                label="Clear breathing sounds and educate about respiratory infection development prevention"
+                sx={{ textAlign: 'left', marginBottom: 0.2  }}
+              />
+            </FormGroup>
+          </FormControl>
+        </Box>
+      </Box>
+      <Box sx={{ marginTop: '20px' }}>
+        <Button
+          variant="contained"
+          onClick={handleConfirm1}
+          sx={{ backgroundColor: '#013220', color: '#fff', width: '100%' }}
+        >
+          Confirm
+        </Button>
+      </Box>
+      {/* Conditional rendering for the new box */}
+    </Box>
+    {showConfirmBox1 && (
+        <Box sx={{ paddingTop: 2, paddingLeft: 2, paddingRight: 2,  maxWidth: '80vh', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center', marginLeft: 2}}>
+          <Box sx={{ marginTop: '10px', marginBottom: '10px', textAlign: 'center' }}>
+            <Typography variant="body1" color="inherit" component="div" sx={{marginBottom: 3}}>
+              <strong>Here are the possible interventions</strong>
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Monitor V/S especially respiratory rate
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Assess airway and respirations
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Auscultate lungs for any change in conditions
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Administer prescribed medication
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Instruct for increase in fluid intake
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Teach client proper breathing exercises
+            </Typography>
+            <Button
+  variant="contained"
+  onClick={handleConfirm2} // Update the onClick handler to call handleConfirm2
+  sx={{ backgroundColor: '#013220', color: '#fff', marginTop: 5, width: '100%' }}
+>
+  Proceed to Evaluation
+</Button>
+
+          </Box>
+        </Box>
+    )}
+    </Box>
       )}
     </Box>
   );
