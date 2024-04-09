@@ -36,7 +36,37 @@ export default function App() {
   const [showRelatedCauses, setShowRelatedCauses] = useState(false);
   const [showStartupPage, setShowStartupPage] = useState(true);
   const [showNursingDiagnosis, setShowNursingDiagnosis] = useState(false);
+  const [selectedDiagnosis, setSelectedDiagnosis] = useState('');
+  const [selectedFactor, setSelectedFactor] = useState('');
+  
 
+  const handleComboBoxChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+const handleDiagnosisChange = (event) => {
+  setSelectedDiagnosis(event.target.value);
+  // Update selectedValue based on the selected nursing diagnosis
+  if (event.target.value === 10) {
+    setSelectedValue(10);
+  } else if (event.target.value === 20) {
+    setSelectedValue(20);
+  } else if (event.target.value === 30) {
+    setSelectedValue(30);
+  }
+};
+
+// Function to handle radio button value change
+const handleFactorChange = (event) => {
+  setSelectedFactor(event.target.value);
+};
+
+  const handleConfirm = () => {
+    // You can perform any action you need here, such as submitting the selected diagnosis and factor
+    // For demonstration, let's log the selected diagnosis and factor to console
+    console.log('Selected Diagnosis:', selectedDiagnosis);
+    console.log('Selected Factor:', selectedFactor);
+  };
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -387,22 +417,23 @@ export default function App() {
                 </Typography>
                 <Box sx={{ marginBottom: '10px' }}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Combo Box</InputLabel>
+                  <InputLabel id="diagnosis-select-label">Nursing Diagnosis</InputLabel>
                     <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={selectedValue}
-                      onChange={(event) => setSelectedValue(event.target.value)}
+                      labelId="diagnosis-select-label"
+                      id="diagnosis-select"
+                      value={selectedDiagnosis}
+                      onChange={handleDiagnosisChange}
                     >
                       <MenuItem value={10}>Ten</MenuItem>
                       <MenuItem value={20}>Twenty</MenuItem>
                       <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                   </FormControl>
+
                 </Box>
               </Box>
             )}
-            {showNursingDiagnosis && (
+            {selectedValue && (
               <Box
                 sx={{
                   display: 'flex',
@@ -419,19 +450,61 @@ export default function App() {
                   <strong>Related Factors</strong>
                 </Typography>
                 <FormControl component="fieldset">
-                  <RadioGroup
-                    aria-label="options"
-                    name="options"
-                    value={selectedOption}
-                    onChange={(event) => setSelectedOption(event.target.value)}
-                  >
-                    <FormControlLabel value="option1" control={<Radio />} label="Option 1" />
-                    <FormControlLabel value="option2" control={<Radio />} label="Option 2" />
-                    <FormControlLabel value="option3" control={<Radio />} label="Option 3" />
+                <RadioGroup
+                  aria-label="related-factors"
+                  name="related-factors"
+                  value={selectedFactor}
+                  onChange={handleFactorChange}
+                >
+                    {selectedValue === 10 && (
+                      <>
+                        <FormControlLabel value="option1" control={<Radio />} label="Option 1" />
+                        <FormControlLabel value="option2" control={<Radio />} label="Option 2" />
+                      </>
+                    )}
+                    {selectedValue === 20 && (
+                      <>
+                        <FormControlLabel value="option3" control={<Radio />} label="Option 3" />
+                        <FormControlLabel value="option4" control={<Radio />} label="Option 4" />
+                      </>
+                    )}
+                    {selectedValue === 30 && (
+                      <>
+                        <FormControlLabel value="option5" control={<Radio />} label="Option 5" />
+                        <FormControlLabel value="option6" control={<Radio />} label="Option 6" />
+                      </>
+                    )}
                   </RadioGroup>
                 </FormControl>
               </Box>
             )}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundPosition: 'center',
+                minHeight: '10vh', /* Adjusted minHeight */
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '8px',
+                padding: '8px',
+                width: '100%', // Adjusted width to match the medical information box
+                marginTop: '20px',
+              }}
+            >
+                          <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                <strong>Selected Nursing Diagnosis</strong>: {selectedDiagnosis}
+              </Typography>
+              <Typography variant="body1" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+                <strong>Selected Related Factor</strong>: {selectedFactor}
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={handleConfirm}
+                sx={{ backgroundColor: '#013220', color: '#fff' }}
+              >
+                Confirm
+              </Button>
+            </Box>
           </Box>
         </Box>
       )}
