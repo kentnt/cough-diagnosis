@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import CustomAppBar from './CustomAppBar'; // Import the CustomAppBar component
 import TextField from '@mui/material/TextField';
@@ -15,6 +15,10 @@ import Radio from '@mui/material/Radio';
 import feuBackground from './feu.png';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 export default function App() {
   const [systolic, setSystolic] = useState('');
@@ -48,6 +52,52 @@ export default function App() {
   const [showConfirmBox1, setShowConfirmBox1] = useState(false);
   const [nursingDiagnosis, setShowNursingDiagnosis] = useState(false);
   const [showActionPlanBox, setShowActionPlanBox] = useState(false);
+  const [showEvaluation, setShowEvaluation] = useState(false);
+  const [painRelieved, setPainRelieved] = useState('');
+  const [airExchangeIncreased, setAirExchangeIncreased] = useState('');
+  const [noCracklesPresent, setNoCracklesPresent] = useState('');
+  const [rrAndSo2Normalized, setRrAndSo2Normalized] = useState('');
+  const [breathingSoundsClear, setBreathingSoundsClear] = useState('');
+  const [educatedAboutPrevention, setEducatedAboutPrevention] = useState('');
+  const [educatedAboutRespiratoryInfection, setEducatedAboutRespiratoryInfection] = useState('');
+  const [open, setOpen] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [isConfirmEnabled, setIsConfirmEnabled] = useState(false);
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
+useEffect(() => {
+  // Check if all input values are not empty
+  const areInputsFilled = systolic !== '' && diastolic !== '' && temperature !== '' && respiratoryRate !== '' && pulseRate !== '' && oxygenSaturation !== '' && objectiveSubjectiveData !== '';
+
+  // Update the form validity state
+  setIsFormValid(areInputsFilled);
+}, [systolic, diastolic, temperature, respiratoryRate, pulseRate, oxygenSaturation, objectiveSubjectiveData]);
+
+useEffect(() => {
+  const areAnyCheckboxesChecked = checkbox1Checked || checkbox2Checked || checkbox3Checked || checkbox4Checked || checkbox5Checked || checkbox6Checked;
+  setIsConfirmEnabled(areAnyCheckboxesChecked);
+}, [checkbox1Checked, checkbox2Checked, checkbox3Checked, checkbox4Checked, checkbox5Checked, checkbox6Checked]);
+
+useEffect(() => {
+  const areAllRadioGroupsFilled =
+    painRelieved !== '' &&
+    airExchangeIncreased !== '' &&
+    noCracklesPresent !== '' &&
+    rrAndSo2Normalized !== '' &&
+    breathingSoundsClear !== '' &&
+    educatedAboutPrevention !== '' &&
+    educatedAboutRespiratoryInfection !== '';
+
+  setIsSubmitEnabled(areAllRadioGroupsFilled);
+}, [
+  painRelieved,
+  airExchangeIncreased,
+  noCracklesPresent,
+  rrAndSo2Normalized,
+  breathingSoundsClear,
+  educatedAboutPrevention,
+  educatedAboutRespiratoryInfection,
+]);
 
   const handleDiagnosisChange = (event) => {
     setSelectedDiagnosis(event.target.value);
@@ -65,6 +115,7 @@ export default function App() {
   const handleFactorChange = (event) => {
     setSelectedFactor(event.target.value);
   };
+
 
   const handleConfirm = () => {
     // Reset state variables to clear the boxes
@@ -100,6 +151,7 @@ export default function App() {
     setShowRadioGroups(true); // Show the new box with radio groups
     setShowConfirmBox1(false); // Hide the possible interventions box
     setShowActionPlanBox(false);
+    setShowEvaluation(true);
   };
   
   const handleCheckbox1Change = (event) => {
@@ -129,6 +181,15 @@ export default function App() {
     setShowConfirmBox1(true); // Set showConfirmBox to true when Confirm button is clicked
   };
 
+  const handleSubmit1 = () => {
+    // Handle form submission
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    window.location.reload();
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -380,6 +441,7 @@ export default function App() {
                 type="submit"
                 variant="contained"
                 sx={{ mt: 2, backgroundColor: '#013220', color: '#fff', width: '100%' }}
+                disabled={!isFormValid} // Disable the button if the form is not valid
               >
                 Submit
               </Button>
@@ -560,12 +622,13 @@ export default function App() {
       sx={{
         flexGrow: 1,
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         padding: '20px'
       }}
     >
-    <Box sx={{ p: 2, width: '100%', maxWidth: '80vh', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
+    <Box sx={{ diplay: 'flex', p: 2, width: '100%', maxWidth: '80vh', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center' }}>
       <Typography variant="body1" color="inherit" component="div"  sx={{ marginTop: '5px' }}>
         <strong>Select Action Plan for the patient</strong>
       </Typography>
@@ -624,15 +687,15 @@ export default function App() {
           variant="contained"
           onClick={handleConfirm1}
           sx={{ backgroundColor: '#013220', color: '#fff', width: '100%' }}
+          disabled={!isConfirmEnabled} // Disable the button if no checkboxes are checked
         >
           Confirm
         </Button>
       </Box>
-      {/* Conditional rendering for the new box */}
     </Box>
     {showConfirmBox1 && (
-        <Box sx={{ paddingTop: 2, paddingLeft: 2, paddingRight: 2,  maxWidth: '80vh', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center', marginLeft: 2}}>
-          <Box sx={{ marginTop: '10px', marginBottom: '10px', textAlign: 'center' }}>
+        <Box sx={{ marginTop: 2, paddingTop: 2, paddingLeft: 2, paddingRight: 2,  maxWidth: '80vh', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', textAlign: 'center', marginLeft: 2}}>
+          <Box sx={{ flexGrow:1, marginTop: '10px', marginBottom: '10px', textAlign: 'center' }}>
             <Typography variant="body1" color="inherit" component="div" sx={{marginBottom: 3}}>
               <strong>Here are the possible interventions</strong>
             </Typography>
@@ -655,16 +718,146 @@ export default function App() {
               Teach client proper breathing exercises
             </Typography>
             <Button
-  variant="contained"
-  onClick={handleConfirm2} // Update the onClick handler to call handleConfirm2
-  sx={{ backgroundColor: '#013220', color: '#fff', marginTop: 5, width: '100%' }}
->
-  Proceed to Evaluation
-</Button>
-
+              variant="contained"
+              onClick={handleConfirm2} // Update the onClick handler to call handleConfirm2
+              sx={{ backgroundColor: '#013220', color: '#fff', marginTop: 5, width: '100%' }}
+            >
+              Proceed to Evaluation
+            </Button>
           </Box>
         </Box>
     )}
+{showEvaluation && (
+  <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundPosition: 'center',
+        minHeight: '8vh',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        borderRadius: '8px',
+        padding: '8px',
+        marginTop: '20px', // Adjusted marginTop to create spacing
+        marginLeft: '20px', // Adjusted marginLeft to ensure proper alignment
+        p: 4
+      }}
+    >
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px', textAlign: 'center' }}>
+        <strong>Evaluation</strong>
+      </Typography>
+
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+        Was the patient's pain relieved?
+      </Typography>
+      <RadioGroup
+        aria-label="pain-relieved"
+        name="pain-relieved"
+        value={painRelieved}
+        onChange={(e) => setPainRelieved(e.target.value)}
+      >
+        <FormControlLabel value="met" control={<Radio />} label="Met" />
+        <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+      </RadioGroup>
+
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+        Did the patient's air exchange increase?
+      </Typography>
+      <RadioGroup
+        aria-label="air-exchange-increased"
+        name="air-exchange-increased"
+        value={airExchangeIncreased}
+        onChange={(e) => setAirExchangeIncreased(e.target.value)}
+      >
+        <FormControlLabel value="met" control={<Radio />} label="Met" />
+        <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+      </RadioGroup>
+
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+        There are no crackles present
+      </Typography>
+      <RadioGroup
+        aria-label="no-crackles-present"
+        name="no-crackles-present"
+        value={noCracklesPresent}
+        onChange={(e) => setNoCracklesPresent(e.target.value)}
+      >
+        <FormControlLabel value="met" control={<Radio />} label="Met" />
+        <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+      </RadioGroup>
+
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+        Was the patient's RR and SO2 normalized?
+      </Typography>
+      <RadioGroup
+        aria-label="rr-so2-normalized"
+        name="rr-so2-normalized"
+        value={rrAndSo2Normalized}
+        onChange={(e) => setRrAndSo2Normalized(e.target.value)}
+      >
+        <FormControlLabel value="met" control={<Radio />} label="Met" />
+        <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+      </RadioGroup>
+
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+        Is the patient's breathing sounds clear?
+      </Typography>
+      <RadioGroup
+        aria-label="breathing-sounds-clear"
+        name="breathing-sounds-clear"
+        value={breathingSoundsClear}
+        onChange={(e) => setBreathingSoundsClear(e.target.value)}
+      >
+        <FormControlLabel value="met" control={<Radio />} label="Met" />
+        <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+      </RadioGroup>
+
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+        The patient is educated about the prevention of the development of respiratory infections
+      </Typography>
+      <RadioGroup
+        aria-label="educated-about-prevention"
+        name="educated-about-prevention"
+        value={educatedAboutPrevention}
+        onChange={(e) => setEducatedAboutPrevention(e.target.value)}
+      >
+        <FormControlLabel value="met" control={<Radio />} label="Met" />
+        <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+      </RadioGroup>
+
+      <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
+        Was the patient educated about respiratory infection development prevention?
+      </Typography>
+      <RadioGroup
+        aria-label="educated-about-respiratory-infection"
+        name="educated-about-respiratory-infection"
+        value={educatedAboutRespiratoryInfection}
+        onChange={(e) => setEducatedAboutRespiratoryInfection(e.target.value)}
+      >
+        <FormControlLabel value="met" control={<Radio />} label="Met" />
+        <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+      </RadioGroup>
+
+      <Button variant="contained" color="primary" onClick={handleSubmit1} 
+        sx={{ backgroundColor: '#013220', color: '#fff', marginTop: 5, width: '100%' }} 
+        disabled={!isSubmitEnabled} // Disable the button if any radio group is not filled 
+      >
+        Submit
+      </Button>
+
+      {/* Dialog for displaying success message */}
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogTitle sx={{marginTop:2}}><strong>The data has been successfully recorded!</strong></DialogTitle>
+        <DialogContent>
+          <Typography>Thank you for diligently entering the patient data into our system. Your attention to detail ensures accurate records and contributes to the quality of care we provide.</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} sx={{ backgroundColor: '#013220', color: '#fff', marginTop: 5}}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+)}
     </Box>
       )}
     </Box>
