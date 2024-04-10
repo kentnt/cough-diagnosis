@@ -709,13 +709,19 @@ useEffect(() => {
               Auscultate lungs for any change in conditions
             </Typography>
             <Typography variant="body1" color="inherit" component="div">
-              Administer prescribed medication
+              Administer prescribed medication (<span style={{ fontStyle: 'italic' }}>as needed</span>)
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Administer oxygen mask/canula
             </Typography>
             <Typography variant="body1" color="inherit" component="div">
               Instruct for increase in fluid intake
             </Typography>
             <Typography variant="body1" color="inherit" component="div">
               Teach client proper breathing exercises
+            </Typography>
+            <Typography variant="body1" color="inherit" component="div">
+              Refer to specialist (<span style={{ fontStyle: 'italic' }}>as needed</span>)
             </Typography>
             <Button
               variant="contained"
@@ -757,6 +763,7 @@ useEffect(() => {
       >
         <FormControlLabel value="met" control={<Radio />} label="Met" />
         <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+        <FormControlLabel value="NA" control={<Radio />} label="N/A" />
       </RadioGroup>
 
       <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
@@ -770,6 +777,7 @@ useEffect(() => {
       >
         <FormControlLabel value="met" control={<Radio />} label="Met" />
         <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+        <FormControlLabel value="NA" control={<Radio />} label="N/A" />
       </RadioGroup>
 
       <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
@@ -783,6 +791,7 @@ useEffect(() => {
       >
         <FormControlLabel value="met" control={<Radio />} label="Met" />
         <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+        <FormControlLabel value="NA" control={<Radio />} label="N/A" />
       </RadioGroup>
 
       <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
@@ -796,6 +805,7 @@ useEffect(() => {
       >
         <FormControlLabel value="met" control={<Radio />} label="Met" />
         <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+        <FormControlLabel value="NA" control={<Radio />} label="N/A" />
       </RadioGroup>
 
       <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
@@ -809,6 +819,7 @@ useEffect(() => {
       >
         <FormControlLabel value="met" control={<Radio />} label="Met" />
         <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+        <FormControlLabel value="NA" control={<Radio />} label="N/A" />
       </RadioGroup>
 
       <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
@@ -822,6 +833,7 @@ useEffect(() => {
       >
         <FormControlLabel value="met" control={<Radio />} label="Met" />
         <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+        <FormControlLabel value="NA" control={<Radio />} label="N/A" />
       </RadioGroup>
 
       <Typography variant="h6" color="inherit" component="div" sx={{ marginBottom: '10px' }}>
@@ -835,6 +847,7 @@ useEffect(() => {
       >
         <FormControlLabel value="met" control={<Radio />} label="Met" />
         <FormControlLabel value="unmet" control={<Radio />} label="Unmet" />
+        <FormControlLabel value="NA" control={<Radio />} label="N/A" />
       </RadioGroup>
 
       <Button variant="contained" color="primary" onClick={handleSubmit1} 
